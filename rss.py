@@ -92,6 +92,7 @@ def login():
         'checkcode': 'XxXx'
     }
     session = requests.Session()
+    session.trust_env = False
     response = session.get('https://pt.sjtu.edu.cn/login.php', headers=user_headers)
     if '验证码' in response.content.decode():
         print("Warning checkcode appears")
