@@ -84,7 +84,7 @@ def get_nums_signs_checkcode(i, keys, pattens):
 
 def login():
     # print('\r\rVisited  ', datetime.datetime.utcnow())
-    login_url = 'https://pt.sjtu.edu.cn/takelogin.php'
+    login_url = 'https://202.120.2.198/takelogin.php'
 
     login_data = {
         'username': user,
@@ -93,12 +93,12 @@ def login():
     }
     session = requests.Session()
     session.trust_env = False
-    response = session.get('https://pt.sjtu.edu.cn/login.php', headers=user_headers, verify=False)
+    response = session.get('https://202.120.2.198/login.php', headers=user_headers, verify=False)
     if '验证码' in response.content.decode():
         print("Warning checkcode appears")
         # print(response.content.decode())
         soup = BeautifulSoup(response.content.decode(), features="html.parser")
-        img_url = "https://pt.sjtu.edu.cn/" + soup.select('img')[-1].get("src")
+        img_url = "https://202.120.2.198/" + soup.select('img')[-1].get("src")
         img = session.get(img_url, headers=user_headers, verify=False).content
         img = cv2.imdecode(np.frombuffer(img, np.uint8), cv2.IMREAD_GRAYSCALE)
         img = np.asarray(img, np.float32)
@@ -125,7 +125,7 @@ def get_rss():
         session = login()
         record_time = time.time()
 
-    response = session.get('https://pt.sjtu.edu.cn/torrents.php', headers=user_headers, verify=False)
+    response = session.get('https://202.120.2.198/torrents.php', headers=user_headers, verify=False)
     soup = BeautifulSoup(response.content.decode(), features="html.parser")
     if "验证码" in soup:
         print("Warning: checkcode appears, relogin")
