@@ -38,7 +38,7 @@ user_headers = {
 
 def trans(torrent):
     title = torrent.select('a')[1]['title']
-    link = 'https://202.120.2.198/{}&passkey={}'.format(torrent.select('a')[2]['href'], passkey)
+    link = 'https:// pt.sjtu.edu.cn/{}&passkey={}'.format(torrent.select('a')[2]['href'], passkey)
     description = torrent.select('br')[0].text
     return PyRSS2Gen.RSSItem(title=title, link=link, description=description)
 
@@ -84,7 +84,7 @@ def get_nums_signs_checkcode(i, keys, pattens):
 
 def login():
     # print('\r\rVisited  ', datetime.datetime.utcnow())
-    login_url = 'https://202.120.2.198/takelogin.php'
+    login_url = 'https:// pt.sjtu.edu.cn/takelogin.php'
 
     login_data = {
         'username': user,
@@ -93,13 +93,13 @@ def login():
     }
     session = requests.Session()
     session.trust_env = False
-    response = session.get('https://202.120.2.198/login.php', headers=user_headers, verify=False)
+    response = session.get('https:// pt.sjtu.edu.cn/login.php', headers=user_headers,  )
     if '验证码' in response.content.decode():
         print("Warning checkcode appears")
         # print(response.content.decode())
         soup = BeautifulSoup(response.content.decode(), features="html.parser")
-        img_url = "https://202.120.2.198/" + soup.select('img')[-1].get("src")
-        img = session.get(img_url, headers=user_headers, verify=False).content
+        img_url = "https:// pt.sjtu.edu.cn/" + soup.select('img')[-1].get("src")
+        img = session.get(img_url, headers=user_headers,  ).content
         img = cv2.imdecode(np.frombuffer(img, np.uint8), cv2.IMREAD_GRAYSCALE)
         img = np.asarray(img, np.float32)
         img = (200 - img[9:19, 10:54]) / 200
@@ -112,7 +112,7 @@ def login():
         login_data['checkcode'] = str(ans)
         # with open('./img.png', 'wb') as f:
         #     f.write(img)
-    response = session.post(login_url, headers=user_headers, data=login_data, verify=False)
+    response = session.post(login_url, headers=user_headers, data=login_data,  )
     if '验证码' in response.content.decode():
         raise ImportError
     return session
@@ -125,7 +125,7 @@ def get_rss():
         session = login()
         record_time = time.time()
 
-    response = session.get('https://202.120.2.198/torrents.php', headers=user_headers, verify=False)
+    response = session.get('https:// pt.sjtu.edu.cn/torrents.php', headers=user_headers,  )
     soup = BeautifulSoup(response.content.decode(), features="html.parser")
     if "验证码" in soup:
         print("Warning: checkcode appears, relogin")
