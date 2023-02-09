@@ -152,7 +152,7 @@ def get_rss():
             # print(torrent.select('a')[1]['title'], get_number(torrent))
             items.append(trans(torrent))
 
-    rss = PyRSS2Gen.RSS2(title=user+'的RSS订阅', link="http://127.0.0.1/{}".format(port), description=user+'的自定义RSS订阅', pubDate=datetime.datetime.utcnow(), items=items)
+    rss = PyRSS2Gen.RSS2(title=user+'的RSS订阅, Hotword启动', link="http://127.0.0.1/{}".format(port), description=user+'的自定义RSS订阅', pubDate=datetime.datetime.utcnow(), items=items)
     return rss.to_xml()
 
 
