@@ -19,6 +19,7 @@ def get_args():
     parser.add_argument('--password', type=str)
     parser.add_argument('--passkey', type=str)
     parser.add_argument('--port', type=int, default=80)
+    parser.add_argument('--hotword', type=str, default='')
     args = parser.parse_args()
     return args
 
@@ -38,7 +39,7 @@ user_headers = {
 
 def trans(torrent):
     title = torrent.select('a')[1]['title']
-    link = 'https:// pt.sjtu.edu.cn/{}&passkey={}'.format(torrent.select('a')[2]['href'], passkey)
+    link = 'https://pt.sjtu.edu.cn/{}&passkey={}'.format(torrent.select('a')[2]['href'], passkey)
     description = torrent.select('br')[0].text
     return PyRSS2Gen.RSSItem(title=title, link=link, description=description)
 
@@ -82,9 +83,19 @@ def get_nums_signs_checkcode(i, keys, pattens):
             return keys[idx] if keys[idx] != 'x' else '*'
 
 
+def get_hot_word_flag(torrent):
+    if args.hotword == '':
+        return False
+    hotwords = args.hotword.split(",")
+    for hotword in hotwords:
+        if hotword in str(torrent):
+            return True
+    return False
+
+
 def login():
     # print('\r\rVisited  ', datetime.datetime.utcnow())
-    login_url = 'https:// pt.sjtu.edu.cn/takelogin.php'
+    login_url = 'https://pt.sjtu.edu.cn/takelogin.php'
 
     login_data = {
         'username': user,
@@ -93,12 +104,12 @@ def login():
     }
     session = requests.Session()
     session.trust_env = False
-    response = session.get('https:// pt.sjtu.edu.cn/login.php', headers=user_headers,  )
+    response = session.get('https://pt.sjtu.edu.cn/login.php', headers=user_headers,  )
     if '验证码' in response.content.decode():
         print("Warning checkcode appears")
         # print(response.content.decode())
         soup = BeautifulSoup(response.content.decode(), features="html.parser")
-        img_url = "https:// pt.sjtu.edu.cn/" + soup.select('img')[-1].get("src")
+        img_url = "https://pt.sjtu.edu.cn/" + soup.select('img')[-1].get("src")
         img = session.get(img_url, headers=user_headers,  ).content
         img = cv2.imdecode(np.frombuffer(img, np.uint8), cv2.IMREAD_GRAYSCALE)
         img = np.asarray(img, np.float32)
@@ -125,7 +136,7 @@ def get_rss():
         session = login()
         record_time = time.time()
 
-    response = session.get('https:// pt.sjtu.edu.cn/torrents.php', headers=user_headers,  )
+    response = session.get('https://pt.sjtu.edu.cn/torrents.php', headers=user_headers,  )
     soup = BeautifulSoup(response.content.decode(), features="html.parser")
     if "验证码" in soup:
         print("Warning: checkcode appears, relogin")
@@ -136,7 +147,7 @@ def get_rss():
     items = []
     # print(len(torrents))
     for torrent in torrents:
-        if get_number_flag(torrent) or get_size_flag(torrent) or get_free_hot_flag(torrent):
+        if get_number_flag(torrent) or get_size_flag(torrent) or get_free_hot_flag(torrent) or get_hot_word_flag(torrent):
             # print(get_number_flag(torrent) , get_size_flag(torrent), get_free_hot_flag(torrent))
             # print(torrent.select('a')[1]['title'], get_number(torrent))
             items.append(trans(torrent))
