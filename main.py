@@ -130,7 +130,7 @@ app = Flask(__name__)
 def rss():
     rss_items = get_torrent_putao(args, session, user_headers)
 
-    rss = PyRSS2Gen.RSS2(title='Coatsocold的HDKylin RSS订阅', link="http://127.0.0.1:{}".format(args.port), description='自定义RSS订阅', pubDate=datetime.datetime.utcnow(), items=rss_items)
+    rss = PyRSS2Gen.RSS2(title='SJTU PUTAO RSS订阅', link="http://127.0.0.1:{}".format(args.port), description='自定义RSS订阅', pubDate=datetime.datetime.utcnow(), items=rss_items)
     rss = rss.to_xml()
     rss = rss.replace("iso-8859-1", "utf-8")
     r = Response(response=rss, status=200, mimetype="application/xml")
