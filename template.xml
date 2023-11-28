@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<container version="2">
+  <name>rss-putao</name>
+  <repository>sunswallow/sjtu-pt-rss:0.1</repository>
+  <registry/>
+  <network>bridge</network>
+  <myip/>
+  <shell>sh</shell>
+  <privileged>false</privileged>
+  <support/>
+  <project/>
+  <overview/>
+  <category/>
+  <webui/>
+  <templateurl/>
+  <icon/>
+  <extraparams/>
+  <postargs/>
+  <cpuset/>
+  <dateinstalled>1701180403</dateinstalled>
+  <donatetext/>
+  <donatelink/>
+  <requires/>
+  <config name="host port 1" target="80" default="9898" mode="tcp" description="网络端口" type="port" display="always" required="false" mask="false"></config>
+  <config name="cookies" target="cookies" default="none" mode="" description="网页cookies" type="variable" display="always" required="false" mask="false"></config>
+  <config name="passkey" target="passkey" default="none" mode="" description="种子下载的passkey" type="variable" display="always" required="false" mask="false"></config>
+  <config name="survival_time_limit" target="survival_time_limit" default="0" mode="" description="生存时间最大值（分）" type="variable" display="always" required="false" mask="false"></config>
+  <config name="only_free" target="only_free" default="1" mode="" description="只显示免费种子" type="variable" display="always" required="false" mask="false"></config>
+  <config name="only_hot" target="only_hot" default="0" mode="" description="只显示热门种子" type="variable" display="always" required="false" mask="false"></config>
+  <config name="hotword" target="hotword" default="" mode="" description="热词模式，强制显示含热词的种子" type="variable" display="always" required="false" mask="false"></config>
+  <config name="hot_or_free" target="hot_or_free" default="0" mode="" description="只显示热门或免费种子" type="variable" display="always" required="false" mask="false"></config>
+  <config name="downloading_people_limit" target="downloading_people_limit" default="0" mode="" description="下载人数最小值" type="variable" display="always" required="false" mask="false"></config>
+</container>
